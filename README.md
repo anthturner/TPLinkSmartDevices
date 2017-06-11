@@ -1,7 +1,7 @@
 # TP-Link Smart Devices SDK
-This library allows a developer to discovery and operate TP-Link Smart Devices in C#.
+This library allows a developer to discover and operate TP-Link Smart Devices with C# applications.
 
-This includes TP-Link Smart Switches HS100/105/110 as well as TP-Link Smart Bulbs LB100/110/120/130.
+This includes support for TP-Link Smart Switches HS100/105/110 as well as TP-Link Smart Bulbs LB100/110/120/130.
 
 
 ## Usage
@@ -27,9 +27,9 @@ ManualMessageCache, and TimeGatedMessageCache.
 
 * NoMessageCache passes all requests through to the device in real-time.
 
-* ManualMessageCache caches everything and only flushes when the Flush() function is called.
+* ManualMessageCache caches everything and only updates the cache after the Flush() function is called.
 
-* TimeGatedMessageCache (default) expires messages in cache after a given number of seconds.
+* TimeGatedMessageCache (default) expires messages in cache after a given number of seconds from their original cache time.
 
 
 ## Disclaimer
