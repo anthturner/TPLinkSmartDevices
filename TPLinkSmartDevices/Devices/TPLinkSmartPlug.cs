@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TPLinkSmartDevices.Devices
 {
@@ -52,8 +52,8 @@ namespace TPLinkSmartDevices.Devices
             if ((int)sysInfo.on_time == 0)
                 PoweredOnSince = default(DateTime);
             else
-                PoweredOnSince = DateTime.Now - TimeSpan.FromSeconds((int)sysInfo.system.get_sysinfo.on_time);
-            
+                PoweredOnSince = DateTime.Now - TimeSpan.FromSeconds((int)sysInfo.on_time);
+
             Refresh(sysInfo);
         }
     }
