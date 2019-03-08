@@ -64,9 +64,11 @@ namespace TPLinkSmartDevices
                 var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
 
                 TPLinkSmartDevice device = null;
-                if (((string)sys_info.model).StartsWith("HS"))
+            string model = (string) sys_info.model;
+
+            if (model.StartsWith("HS"))
                     device = new TPLinkSmartPlug(ip.Address.ToString());
-                else if (((string)sys_info.model).StartsWith("LB"))
+            else if (model.StartsWith("LB"))
                     device = new TPLinkSmartBulb(ip.Address.ToString());
 
                 if (device != null)
