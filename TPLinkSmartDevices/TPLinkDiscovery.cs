@@ -58,21 +58,23 @@ namespace TPLinkSmartDevices
             if (discoveryComplete) //Prevent ObjectDisposedException/NullReferenceException when the Close() function is called
                 return;
 
-                IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
-                byte[] bytes = udp.EndReceive(ar, ref ip);
-                var message = Encoding.ASCII.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
-                var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
+            IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
+            byte[] bytes = udp.EndReceive(ar, ref ip);
+            var message = Encoding.ASCII.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
+            var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
 
-                TPLinkSmartDevice device = null;
+            TPLinkSmartDevice device = null;
             string model = (string) sys_info.model;
 
-            if (model.StartsWith("HS"))
-                    device = new TPLinkSmartPlug(ip.Address.ToString());
+            if (model.StartsWith("HS110"))
+                device = new TPLinkSmartMeterPlug(ip.Address.ToString());
+            else if (model.StartsWith("HS"))
+                device = new TPLinkSmartPlug(ip.Address.ToString());
             else if (model.StartsWith("LB"))
-                    device = new TPLinkSmartBulb(ip.Address.ToString());
+                device = new TPLinkSmartBulb(ip.Address.ToString());
 
-                if (device != null)
-                    DiscoveredDevices.Add(device);
+            if (device != null)
+                DiscoveredDevices.Add(device);
             
             if (udp != null)
                 StartListening();
