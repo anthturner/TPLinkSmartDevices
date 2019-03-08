@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,8 @@ namespace TPLinkSmartDevices
         private UdpClient udp;
         IAsyncResult _asyncResult = null;
 
+        private bool discoveryComplete = false;
+
         public TPLinkDiscovery()
         {
             DiscoveredDevices = new List<TPLinkSmartDevice>();
@@ -27,6 +29,8 @@ namespace TPLinkSmartDevices
 
         public async Task<List<TPLinkSmartDevice>> Discover(int port=9999, int timeout=5000)
         {
+            discoveryComplete = false;
+
             DiscoveredDevices.Clear();
             PORT_NUMBER = port;
 
@@ -37,6 +41,7 @@ namespace TPLinkSmartDevices
 
             return await Task.Delay(timeout).ContinueWith(t =>
             {
+                discoveryComplete = true;
                 udp.Close();
                 udp = null;
 
@@ -50,6 +55,9 @@ namespace TPLinkSmartDevices
         }
         private void Receive(IAsyncResult ar)
         {
+            if (discoveryComplete) //Prevent ObjectDisposedException/NullReferenceException when the Close() function is called
+                return;
+
             try
             {
                 IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
@@ -71,6 +79,7 @@ namespace TPLinkSmartDevices
             if (udp != null)
                 StartListening();
         }
+
         private void SendDiscoveryRequest()
         {
             UdpClient client = new UdpClient(PORT_NUMBER);
