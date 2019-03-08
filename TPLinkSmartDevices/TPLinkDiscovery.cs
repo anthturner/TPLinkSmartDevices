@@ -58,8 +58,6 @@ namespace TPLinkSmartDevices
             if (discoveryComplete) //Prevent ObjectDisposedException/NullReferenceException when the Close() function is called
                 return;
 
-            try
-            {
                 IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
                 byte[] bytes = udp.EndReceive(ar, ref ip);
                 var message = Encoding.ASCII.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
@@ -73,9 +71,7 @@ namespace TPLinkSmartDevices
 
                 if (device != null)
                     DiscoveredDevices.Add(device);
-            }
-            catch (Exception ex) { }
-
+            
             if (udp != null)
                 StartListening();
         }
