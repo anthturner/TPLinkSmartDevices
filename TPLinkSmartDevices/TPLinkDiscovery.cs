@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,8 @@ namespace TPLinkSmartDevices
         private UdpClient udp;
         IAsyncResult _asyncResult = null;
 
+        private bool discoveryComplete = false;
+
         public TPLinkDiscovery()
         {
             DiscoveredDevices = new List<TPLinkSmartDevice>();
@@ -27,6 +29,8 @@ namespace TPLinkSmartDevices
 
         public async Task<List<TPLinkSmartDevice>> Discover(int port=9999, int timeout=5000)
         {
+            discoveryComplete = false;
+
             DiscoveredDevices.Clear();
             PORT_NUMBER = port;
 
@@ -37,6 +41,7 @@ namespace TPLinkSmartDevices
 
             return await Task.Delay(timeout).ContinueWith(t =>
             {
+                discoveryComplete = true;
                 udp.Close();
                 udp = null;
 
@@ -50,27 +55,31 @@ namespace TPLinkSmartDevices
         }
         private void Receive(IAsyncResult ar)
         {
-            try
-            {
-                IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
-                byte[] bytes = udp.EndReceive(ar, ref ip);
-                var message = Encoding.ASCII.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
-                var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
+            if (discoveryComplete) //Prevent ObjectDisposedException/NullReferenceException when the Close() function is called
+                return;
 
-                TPLinkSmartDevice device = null;
-                if (((string)sys_info.model).StartsWith("HS"))
-                    device = new TPLinkSmartPlug(ip.Address.ToString());
-                else if (((string)sys_info.model).StartsWith("LB"))
-                    device = new TPLinkSmartBulb(ip.Address.ToString());
+            IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
+            byte[] bytes = udp.EndReceive(ar, ref ip);
+            var message = Encoding.ASCII.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
+            var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
 
-                if (device != null)
-                    DiscoveredDevices.Add(device);
-            }
-            catch (Exception ex) { }
+            TPLinkSmartDevice device = null;
+            string model = (string) sys_info.model;
 
+            if (model.StartsWith("HS110"))
+                device = new TPLinkSmartMeterPlug(ip.Address.ToString());
+            else if (model.StartsWith("HS"))
+                device = new TPLinkSmartPlug(ip.Address.ToString());
+            else if (model.StartsWith("LB"))
+                device = new TPLinkSmartBulb(ip.Address.ToString());
+
+            if (device != null)
+                DiscoveredDevices.Add(device);
+            
             if (udp != null)
                 StartListening();
         }
+
         private void SendDiscoveryRequest()
         {
             UdpClient client = new UdpClient(PORT_NUMBER);
