@@ -11,13 +11,13 @@ This includes support for TP-Link Smart Switches HS100/105/110 as well as TP-Lin
 
 
 ### Basic Usage
-    var smartPlug = TPLinkSmartDevices.Devices.TPLinkSmartPlug("HS100.myhome.net");
+    var smartPlug = new TPLinkSmartDevices.Devices.TPLinkSmartPlug("HS100.myhome.net");
     smartPlug.OutletPowered = true; // Turn on relay
     smartPlug.OutletPowered = false; // Turn off relay
 
-    var smartBulb = TPLinkSmartDevices.Devices.TPLinkSmartBulb("LB100.myhome.net");
+    var smartBulb = new TPLinkSmartDevices.Devices.TPLinkSmartBulb("LB100.myhome.net");
     smartBulb.PoweredOn = true; // Turn on bulb
-    smartBulb.PoweredOff = false; // Turn off bulb
+    smartBulb.PoweredOn = false; // Turn off bulb
 
 
 ### Message Caching
