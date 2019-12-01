@@ -13,6 +13,8 @@ namespace TPLinkSmartDevices
 {
     public class TPLinkDiscovery
     {
+        public event EventHandler<DeviceFoundEventArgs> DeviceFound;
+
         private int PORT_NUMBER = 9999;
 
         public List<TPLinkSmartDevice> DiscoveredDevices { get; private set; }
@@ -74,8 +76,10 @@ namespace TPLinkSmartDevices
                 device = new TPLinkSmartBulb(ip.Address.ToString());
 
             if (device != null)
+            {
                 DiscoveredDevices.Add(device);
-            
+                OnDeviceFound(device);
+            }
             if (udp != null)
                 StartListening();
         }
@@ -96,6 +100,21 @@ namespace TPLinkSmartDevices
             client.EnableBroadcast = true;
             client.Send(bytes, bytes.Length, ip);
             client.Close();
+        }
+
+        private void OnDeviceFound(TPLinkSmartDevice device)
+        {
+            DeviceFound?.Invoke(this, new DeviceFoundEventArgs(device));
+        }
+    }
+
+    public class DeviceFoundEventArgs : EventArgs
+    {
+        public TPLinkSmartDevice Device;
+
+        public DeviceFoundEventArgs(TPLinkSmartDevice device)
+        {
+            Device = device;
         }
     }
 }
