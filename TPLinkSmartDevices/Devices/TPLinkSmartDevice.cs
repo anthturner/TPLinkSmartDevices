@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TPLinkSmartDevices.Messaging;
 
 namespace TPLinkSmartDevices.Devices
@@ -85,9 +86,9 @@ namespace TPLinkSmartDevices.Devices
                 LocationLatLong = new int[2] { sysInfo.latitude_i, sysInfo.longitude_i };
         }
 
-        protected dynamic Execute(string system, string command, string argument = null, object value = null)
+        protected dynamic Execute(string system, string command, string argument = null, object value = null, List<string> childIdS = null)
         {
-            var message = new SmartHomeProtocolMessage(system, command, argument, value);
+            var message = new SmartHomeProtocolMessage(system, command, argument, value, childIdS);
             return MessageCache.Request(message, Hostname, Port);
         }
     }
