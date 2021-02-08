@@ -64,7 +64,7 @@ namespace TPLinkSmartDevices
 
             IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
             byte[] bytes = udp.EndReceive(ar, ref ip);
-            var message = Encoding.ASCII.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
+            var message = Encoding.UTF8.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
             var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
 
             TPLinkSmartDevice device = null;
