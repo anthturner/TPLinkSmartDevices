@@ -73,7 +73,7 @@ namespace TPLinkSmartDevices.Devices
             var retValue = Execute("count_down", "add_rule", null, new JObject
                 {
                     new JProperty("enable", 1),
-                    new JProperty("delay", delay.Seconds),
+                    new JProperty("delay", Convert.ToInt32(delay.TotalSeconds)),
                     new JProperty("act", stateAtDelayExpiration? 1 : 0),
                     new JProperty("name", name)
                 });
