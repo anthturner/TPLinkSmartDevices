@@ -38,7 +38,7 @@ namespace TPLinkSmartDevices.Messaging
             {
                 object argObject;
                 if (Value != null)
-                    argObject = new JObject { new JProperty(Argument, Value) };
+                    argObject = Argument != null? new JObject { new JProperty(Argument, Value) }: Value;
                 else
                     argObject = Argument;
 

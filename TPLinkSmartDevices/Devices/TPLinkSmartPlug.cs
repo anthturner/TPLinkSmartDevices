@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace TPLinkSmartDevices.Devices
@@ -55,6 +56,29 @@ namespace TPLinkSmartDevices.Devices
                 PoweredOnSince = DateTime.Now - TimeSpan.FromSeconds((int)sysInfo.on_time);
 
             Refresh(sysInfo);
+        }
+		
+        /// <summary>
+        /// Configure the device so that it goes in the specified state at the delay expiration
+        /// </summary>
+        /// <param name="stateAtDelayExpiration"></param>
+        /// <param name="delay"></param>
+        /// <param name="name"></param>
+        /// <returns>The rule ID (could eventually be useful for changing the existing rule...)</returns>
+        public string SetCountDown(bool stateAtDelayExpiration, TimeSpan delay, string name = "")
+        {
+            // Clean-up the previous rule - if not done, the device responds with a "table is full" error
+            Execute("count_down", "delete_all_rules", null, null);
+
+            var retValue = Execute("count_down", "add_rule", null, new JObject
+                {
+                    new JProperty("enable", 1),
+                    new JProperty("delay", delay.Seconds),
+                    new JProperty("act", stateAtDelayExpiration? 1 : 0),
+                    new JProperty("name", name)
+                });
+
+            return retValue["id"];
         }
     }
 }
