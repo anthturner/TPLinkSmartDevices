@@ -38,7 +38,7 @@ namespace TPLinkSmartDevices.Messaging
             {
                 object argObject;
                 if (Value != null)
-                    argObject = new JObject { new JProperty(Argument, Value) };
+                    argObject = Argument != null? new JObject { new JProperty(Argument, Value) }: Value;
                 else
                     argObject = Argument;
 
@@ -95,7 +95,7 @@ namespace TPLinkSmartDevices.Messaging
             }
             client.Close();
 
-            var decrypted = Encoding.ASCII.GetString(SmartHomeProtocolEncoder.Decrypt(packet)).Trim('\0');
+            var decrypted = Encoding.UTF8.GetString(SmartHomeProtocolEncoder.Decrypt(packet)).Trim('\0');
 
             var subResult = (dynamic)((JObject)JObject.Parse(decrypted)[System])[Command];
             if (subResult["err_code"] != null && subResult.err_code != 0)
