@@ -3,6 +3,10 @@ This library allows a developer to discover and operate TP-Link Smart Devices wi
 
 This includes support for TP-Link Smart Switches HS100/105/110 as well as TP-Link Smart Bulbs LB100/110/120/130.
 
+## NuGet Packages
+A NuGet package for this version is available at https://www.nuget.org/packages/TPLinkSmartDevice.NETCore/
+
+**NOTICE:** Unfortunately, a couple of other users have forked this work and published their own NuGet packages without attribution. However, instead of publishing yet another .NET package, I have opted to just re-point the project to to `netstandard` and release a package for that target instead. If there is a need to create another .NET package for it in the future, I will be happy to do so. If users have contributions, I encourage them to open pull requests here.
 
 ## Usage
 ### Discovery
