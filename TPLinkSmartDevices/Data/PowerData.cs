@@ -21,28 +21,28 @@ namespace TPLinkSmartDevices.Data
         /// <summary>
         /// Current measured voltage in volts.
         /// </summary>
-        public double Voltage => _powerData.voltage_mv / 1000.0d;
+        public double Voltage => _powerData.voltage == null ? _powerData.voltage_mv / 1000.0d : _powerData.voltage;
 
         /// <summary>
         /// Current measured amperage in amps.
         /// </summary>
-        public double Amperage => _powerData.current_ma / 1000.0d;
+        public double Amperage => _powerData.current == null ? _powerData.current_ma / 1000.0d : _powerData.current;
 
         /// <summary>
         /// Current measured power usage in watts.
         /// </summary>
-        public double Power => _powerData.power_mw / 1000.0d;
+        public double Power => _powerData.power == null ? _powerData.power_mw / 1000.0d : _powerData.power;
 
         /// <summary>
         /// Current total power consumption in kilowatthours.
         /// </summary>
-        public double Total => _powerData.total_wh / 1000.0d;
+        public double Total => _powerData.total == null ? _powerData.total_wh / 1000.0d : _powerData.total;
 
         public int ErrorCode => _powerData.err_code;
 
         public override string ToString()
         {
-            return $"{Voltage/1000.0d:0.0} Volt, {Amperage/1000.0d:0.00} Ampere, {Power/1000.0:0.00} Watt";
+            return $"{Voltage:0.0} Volt, {Amperage:0.00} Ampere, {Power:0.00} Watt";
         }
     }
 }
