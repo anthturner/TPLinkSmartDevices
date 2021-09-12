@@ -23,15 +23,17 @@ namespace TPLinkSmartDevices
         IAsyncResult _asyncResult = null;
 
         private bool discoveryComplete = false;
-
+        private int maxNumberOfDevicesToDiscover = -1;
+        private CancellationTokenSource delayCancellationToken = new CancellationTokenSource();
         public TPLinkDiscovery()
         {
             DiscoveredDevices = new List<TPLinkSmartDevice>();
         }
-
-        public async Task<List<TPLinkSmartDevice>> Discover(int port = 9999, int timeout = 5000)
+      
+        public async Task<List<TPLinkSmartDevice>> Discover(int port=9999, int timeout=5000, int maxNumberOfDevicesToDiscover=-1)
         {
             discoveryComplete = false;
+            this.maxNumberOfDevicesToDiscover = maxNumberOfDevicesToDiscover;
 
             DiscoveredDevices.Clear();
             PORT_NUMBER = port;
@@ -48,7 +50,7 @@ namespace TPLinkSmartDevices
             udp = new UdpClient(PORT_NUMBER);
             StartListening();
 
-            return await Task.Delay(timeout).ContinueWith(t =>
+            return await Task.Delay(TimeSpan.FromMilliseconds(timeout), delayCancellationToken.Token).ContinueWith(t =>
             {
                 discoveryComplete = true;
                 udp.Close();
@@ -69,7 +71,7 @@ namespace TPLinkSmartDevices
 
             IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT_NUMBER);
             byte[] bytes = udp.EndReceive(ar, ref ip);
-            var message = Encoding.ASCII.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
+            var message = Encoding.UTF8.GetString(Messaging.SmartHomeProtocolEncoder.Decrypt(bytes));
             var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
 
             TPLinkSmartDevice device = null;
@@ -91,6 +93,13 @@ namespace TPLinkSmartDevices
             {
                 DiscoveredDevices.Add(device);
                 OnDeviceFound(device);
+
+                // If the caller has specified a maximum number of devices to discover, stop waiting after we've
+                // reached this count
+                if (maxNumberOfDevicesToDiscover > 0 && DiscoveredDevices.Count >= maxNumberOfDevicesToDiscover)
+                {
+                    delayCancellationToken.Cancel();
+                }
             }
             if (udp != null)
                 StartListening();
