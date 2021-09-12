@@ -29,7 +29,7 @@ namespace TPLinkSmartDevices
         {
             DiscoveredDevices = new List<TPLinkSmartDevice>();
         }
-
+      
         public async Task<List<TPLinkSmartDevice>> Discover(int port=9999, int timeout=5000, int maxNumberOfDevicesToDiscover=-1)
         {
             discoveryComplete = false;
@@ -38,8 +38,15 @@ namespace TPLinkSmartDevices
             DiscoveredDevices.Clear();
             PORT_NUMBER = port;
 
-            SendDiscoveryRequest();
-            
+            var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    SendDiscoveryRequest(ip);
+                }
+            }
+
             udp = new UdpClient(PORT_NUMBER);
             StartListening();
 
@@ -68,14 +75,19 @@ namespace TPLinkSmartDevices
             var sys_info = ((dynamic)JObject.Parse(message)).system.get_sysinfo;
 
             TPLinkSmartDevice device = null;
-            string model = (string) sys_info.model;
+            if (((JObject) sys_info).Count != 0 && sys_info.model != null)
+            {
+                string model = (string) sys_info.model;
 
-            if (model.StartsWith("HS110"))
-                device = new TPLinkSmartMeterPlug(ip.Address.ToString());
-            else if (model.StartsWith("HS"))
-                device = new TPLinkSmartPlug(ip.Address.ToString());
-            else if (model.StartsWith("LB"))
-                device = new TPLinkSmartBulb(ip.Address.ToString());
+                if (model.StartsWith("HS110"))
+                    device = new TPLinkSmartMeterPlug(ip.Address.ToString());
+                else if (model.StartsWith("HS"))
+                    device = new TPLinkSmartPlug(ip.Address.ToString());
+                else if (model.StartsWith("LB"))
+                    device = new TPLinkSmartBulb(ip.Address.ToString());
+                else if (model.StartsWith("KP303"))
+                    device = new TPLinkSmartStrip(ip.Address.ToString());
+            }
 
             if (device != null)
             {
@@ -93,9 +105,11 @@ namespace TPLinkSmartDevices
                 StartListening();
         }
 
-        private void SendDiscoveryRequest()
+        private void SendDiscoveryRequest(IPAddress IP)
         {
-            UdpClient client = new UdpClient(PORT_NUMBER);
+            var ServerEp = new IPEndPoint(IP, PORT_NUMBER);
+
+            UdpClient client = new UdpClient(ServerEp);
             IPEndPoint ip = new IPEndPoint(IPAddress.Broadcast, PORT_NUMBER);
 
             var discoveryJson = JObject.FromObject(new

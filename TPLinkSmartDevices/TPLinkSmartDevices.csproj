@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Data\PowerData.cs" />
     <Compile Include="Devices\TPLinkSmartMeterPlug.cs" />
+    <Compile Include="Devices\TPLinkSmartStrip.cs" />
     <Compile Include="Messaging\IMessageCache.cs" />
     <Compile Include="Messaging\ManualMessageCache.cs" />
     <Compile Include="Messaging\NoMessageCache.cs" />

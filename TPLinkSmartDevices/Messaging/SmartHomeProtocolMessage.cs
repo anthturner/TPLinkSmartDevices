@@ -42,7 +42,33 @@ namespace TPLinkSmartDevices.Messaging
                 else
                     argObject = Argument;
 
-                var root = new JObject { new JProperty(System, new JObject { new JProperty(Command, argObject) }) };
+                var root = new JObject
+                {
+                    
+                };
+
+                root.Add(System, new JObject
+                {
+                    new JProperty(Command, argObject)
+                });
+
+                if (ChildIdS != null)
+                {
+                    var childerIDs = new JArray();
+
+                    ChildIdS.ForEach(s =>
+                    {
+                        childerIDs.Add(s);
+                    });
+
+                    var children = new JObject
+                    {
+                        ["child_ids"] = childerIDs
+                    };
+
+
+                    root.Add("context", children);
+                }
 
                 return root.ToString(Newtonsoft.Json.Formatting.None);
             }
@@ -52,13 +78,15 @@ namespace TPLinkSmartDevices.Messaging
         public string Command { get; set; }
         public string Argument { get; set; }
         public object Value { get; set; }
+        public List<string> ChildIdS = new List<string>();
 
-        internal SmartHomeProtocolMessage(string system, string command, string argument, object value)
+        internal SmartHomeProtocolMessage(string system, string command, string argument, object value, List<string> childIdS)
         {
             System = system;
             Command = command;
             Argument = argument;
             Value = value;
+            ChildIdS = childIdS;
         }
 
         internal dynamic Execute(string hostname, int port)
