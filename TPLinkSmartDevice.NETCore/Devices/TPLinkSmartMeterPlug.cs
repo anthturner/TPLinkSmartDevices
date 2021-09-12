@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) Anthony Turner
+// Licensed under the Apache License, v2.0
+// https://github.com/anthturner/TPLinkSmartDevices
+
 using TPLinkSmartDevices.Data;
 
 namespace TPLinkSmartDevices.Devices

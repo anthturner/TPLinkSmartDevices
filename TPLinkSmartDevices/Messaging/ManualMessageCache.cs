@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Anthony Turner
+// Licensed under the Apache License, v2.0
+// https://github.com/anthturner/TPLinkSmartDevices
+
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TPLinkSmartDevices.Messaging

@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿// Copyright (c) Anthony Turner
+// Licensed under the Apache License, v2.0
+// https://github.com/anthturner/TPLinkSmartDevices
+
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;

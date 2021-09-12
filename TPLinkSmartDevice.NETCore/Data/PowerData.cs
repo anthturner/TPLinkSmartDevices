@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Anthony Turner
+// Licensed under the Apache License, v2.0
+// https://github.com/anthturner/TPLinkSmartDevices
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -1,4 +1,8 @@
-﻿namespace TPLinkSmartDevices.Messaging
+﻿// Copyright (c) Anthony Turner
+// Licensed under the Apache License, v2.0
+// https://github.com/anthturner/TPLinkSmartDevices
+
+namespace TPLinkSmartDevices.Messaging
 {
     public abstract class IMessageCache
     {
