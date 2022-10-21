@@ -43,6 +43,7 @@ namespace TPLinkSmartDevices
             PORT_NUMBER = port;
 
             var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
+
             foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
@@ -91,6 +92,8 @@ namespace TPLinkSmartDevices
                     device = new TPLinkSmartBulb(ip.Address.ToString());
                 else if (model.StartsWith("KP303"))
                     device = new TPLinkSmartStrip(ip.Address.ToString());
+                else if (model.StartsWith("KL400"))
+                    device = new TPLinkSmartLightStrip(ip.Address.ToString());
             }
 
             if (device != null)
