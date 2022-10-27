@@ -3,6 +3,7 @@
 // https://github.com/anthturner/TPLinkSmartDevices
 
 using System;
+using TPLinkSmartDevices.Model;
 
 namespace TPLinkSmartDevices.Devices
 {
@@ -16,6 +17,7 @@ namespace TPLinkSmartDevices.Devices
         public bool IsColor { get; private set; }
         public bool IsDimmable { get; private set; }
         public bool IsVariableColorTemperature { get; private set; }
+        public bool HasEffects { get; private set; }
 
         /// <summary>
         /// If the light strip is powered on or not
@@ -109,6 +111,7 @@ namespace TPLinkSmartDevices.Devices
             IsColor = (bool)sysInfo.is_color;
             IsDimmable = (bool)sysInfo.is_dimmable;
             IsVariableColorTemperature = (bool)sysInfo.is_variable_color_temp;
+            HasEffects = (sysInfo.lighting_effect_state != null);
 
             dynamic lightState = sysInfo.light_state;
             _poweredOn = lightState.on_off;
@@ -121,6 +124,14 @@ namespace TPLinkSmartDevices.Devices
             _brightness = lightState.brightness;
             
             Refresh(sysInfo);
+        }
+
+        public void SetLightingEffect(LightingEffect effect)
+        {
+            if (!HasEffects)
+                throw new NotSupportedException("Light strip does not support effects.");
+
+            Execute("smartlife.iot.lighting_effect", "set_lighting_effect", value: effect);
         }
     }
 
