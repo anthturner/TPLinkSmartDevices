@@ -53,7 +53,7 @@ namespace TPLinkSmartDevices.Messaging
 
                 root.Add(System, new JObject
                 {
-                    new JProperty(Command, argObject)
+                    new JProperty(Command, (argObject != null ? JToken.FromObject(argObject) : null))
                 });
 
                 if (ChildIdS != null)
