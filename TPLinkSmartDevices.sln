@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPLinkSmartDevices", "TPLinkSmartDevices\TPLinkSmartDevices.csproj", "{3384657A-388D-4912-9187-57A27779760F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPLinkSmartDevice.NETCore", "TPLinkSmartDevice.NETCore\TPLinkSmartDevice.NETCore.csproj", "{60421D17-17D5-4C83-A4A7-B88905BA2FB5}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3384657A-388D-4912-9187-57A27779760F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3384657A-388D-4912-9187-57A27779760F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3384657A-388D-4912-9187-57A27779760F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3384657A-388D-4912-9187-57A27779760F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{60421D17-17D5-4C83-A4A7-B88905BA2FB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60421D17-17D5-4C83-A4A7-B88905BA2FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60421D17-17D5-4C83-A4A7-B88905BA2FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
