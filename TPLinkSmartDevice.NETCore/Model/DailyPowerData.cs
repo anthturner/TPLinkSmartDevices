@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// Copyright (c) Anthony Turner
+// Licensed under the Apache License, v2.0
+// https://github.com/anthturner/TPLinkSmartDevices
 
-namespace TPLinkSmartDevices.Data
+using System;
+
+namespace TPLinkSmartDevices.Model
 {
     /// <summary>
     /// Daily power statistics

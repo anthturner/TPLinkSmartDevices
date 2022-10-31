@@ -2,7 +2,7 @@
 // Licensed under the Apache License, v2.0
 // https://github.com/anthturner/TPLinkSmartDevices
 
-using TPLinkSmartDevices.Data;
+using TPLinkSmartDevices.Model;
 
 namespace TPLinkSmartDevices.Devices
 {
