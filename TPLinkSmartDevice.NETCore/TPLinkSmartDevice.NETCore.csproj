@@ -5,6 +5,7 @@
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
 		<PackageId>TPLinkSmartDevice.NETCore</PackageId>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyName>TPLinkSmartDevices</AssemblyName>
 		<Version>1.1.0</Version>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
 		<FileVersion>1.1.0.0</FileVersion>
