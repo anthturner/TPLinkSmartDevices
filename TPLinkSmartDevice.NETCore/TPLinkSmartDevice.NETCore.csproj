@@ -3,19 +3,31 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageId>TPLinkSmartDevices</PackageId>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>1.2.0</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+		<FileVersion>1.2.0.0</FileVersion>
     <Authors>Anthony Turner</Authors>
     <Company />
     <Description>Allows discovery and control of TP-Link Smart devices</Description>
     <PackageProjectUrl>https://github.com/anthturner/TPLinkSmartDevices</PackageProjectUrl>
-    <RepositoryUrl>github.com/anthturner/TPLinkSmartDevices.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>tplink, smart home, hs100, hs110</PackageTags>
+    <RepositoryUrl>https://github.com/anthturner/TPLinkSmartDevices</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>tplink, smart home, hs100, hs110, light, switch, light strip, lightstrip</PackageTags>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath />
+		</None>
+	</ItemGroup>
 
 </Project>
